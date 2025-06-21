@@ -4,11 +4,19 @@ const dotenv = require('dotenv');
 const connectDB = require('./db.js');
 const Recipe = require('./schema.js');
 
-
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json()); 
+connectDB().then(() => {
+  console.log('Connected to MongoDB');
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}).catch(err => {
+  console.error('MongoDB connection error:', err.message);
+  process.exit(1);
+});
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Recipe API');
@@ -52,7 +60,7 @@ app.get('/api/recipes', async (req, res) => {
 
 
 const parseNumericFilter = (str) => {
-  const match = str.match(/(<=|>=|=|<|>)(\d+)/);
+  const match = str.match(/(<=|>=|=|<|>)(\d+(\.\d+)?)/);
   if (!match) return null;
   const [, op, num] = match;
   const value = parseFloat(num);
@@ -75,7 +83,7 @@ app.get('/api/recipes/search', async (req, res) => {
       filter.title = { $regex: title, $options: 'i' }; 
     }
     if (cuisine) {
-      filter.cuisine = cuisine;
+      filter.cuisine = { $regex: cuisine, $options: 'i' };
     }
     if (rating) {
       const ratingFilter = parseNumericFilter(rating);
@@ -108,6 +116,7 @@ app.get('/api/recipes/search', async (req, res) => {
 
     await connectDB();
     console.log('Connected to MongoDB');
+    console.log('Search filter:', filter);
     const recipes = await Recipe.find(filter).sort({ rating: -1 });
     const formatted = recipes.map((recipe, index) => ({
       id: index + 1,
@@ -129,6 +138,3 @@ app.get('/api/recipes/search', async (req, res) => {
 });
 
 const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});

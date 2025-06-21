@@ -1,12 +1,10 @@
-//import RecipeTable from './RecipeTable1'
-import RecipeTable from './recipeTable'
+import RecipeTable from './RecipeTable1'
 import './App.css'
 
 function App() {
 
   return (
     <>
-    {/* <RecipeTable /> */}
     <RecipeTable />
     </>
   )

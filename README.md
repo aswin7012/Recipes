@@ -1,4 +1,4 @@
-# 🍲 Bored Recipes App
+# 🍲Recipes App
 
 A full-stack MERN (MongoDB, Express, React, Node.js) application to browse, search, and filter delicious recipes with nutrition info and ratings.
 
@@ -9,8 +9,8 @@ A full-stack MERN (MongoDB, Express, React, Node.js) application to browse, sear
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/bored-recipes.git
-cd bored-recipes
+git clone https://github.com/Aezakmi7012/bored.git
+cd bored
 ```
 
 ---
@@ -58,7 +58,7 @@ Replace `your_mongodb_connection_string` with your actual MongoDB URI.
 
 ```bash
 cd backend
-npm start
+node index.js
 ```
 
 - The backend will run on [http://localhost:3000](http://localhost:3000)
@@ -69,7 +69,7 @@ npm start
 
 ```bash
 cd ../frontend
-npm start
+npm run dev
 ```
 
 - The frontend will run on [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal)
@@ -85,52 +85,3 @@ npm start
 
 ---
 
-## 🛠️ Project Structure
-
-```
-bored-recipes/
-  backend/      # Express + MongoDB API
-  frontend/     # React app
-```
-
----
-
-## 🧑‍💻 Development
-
-- Backend code: `backend/`
-- Frontend code: `frontend/src/`
-- Main React component: `frontend/src/RecipeTable1.jsx`
-- Components: `frontend/src/components/`
-
----
-
-## 🐞 Troubleshooting
-
-- **MongoDB connection errors:**  
-  Double-check your `MONGO_URI` in `.env` and ensure MongoDB is running.
-- **Port conflicts:**  
-  Change the port in `backend/index.js` or React's config if needed.
-
----
-
-## 📦 Example `.env` for Backend
-
-```
-MONGO_URI=mongodb://localhost:27017/recipes
-```
-
----
-
-## 🙏 Credits
-
-- Built with [React](https://react.dev/), [Express](https://expressjs.com/), [MongoDB](https://www.mongodb.com/), [Tailwind CSS](https://tailwindcss.com/)
-
----
-
-## 📃 License
-
-MIT
-
----
-
-Enjoy cooking

@@ -3,7 +3,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Aezakmi7012/bored.git
+git clone https://github.com/aswin7012/Recipes.git
 cd bored
 ```
 

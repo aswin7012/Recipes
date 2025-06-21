@@ -1,10 +1,4 @@
-# 🍲Recipes App
-
-A full-stack MERN (MongoDB, Express, React, Node.js) application to browse, search, and filter delicious recipes with nutrition info and ratings.
-
----
-
-## 🚀 Quick Start
+## Project Setup
 
 ### 1. Clone the Repository
 

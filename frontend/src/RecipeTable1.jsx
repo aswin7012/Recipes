@@ -1,21 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
-// Star rating component
-const StarRating = ({ rating }) => {
-  const fullStars = Math.floor(rating);
-  const halfStar = rating - fullStars >= 0.5;
-  return (
-    <div className="flex items-center text-yellow-500">
-      {[...Array(fullStars)].map((_, i) => (
-        <span key={i}>★</span>
-      ))}
-      {halfStar && <span>☆</span>}
-      {[...Array(5 - fullStars - (halfStar ? 1 : 0))].map((_, i) => (
-        <span key={i + 5}>☆</span>
-      ))}
-    </div>
-  );
-};
+import RecipeRow from './components/RecipeRow';
+import RecipeDrawer from './components/RecipeDrawer';
 
 const defaultFilters = {
   title: '',
@@ -48,7 +33,7 @@ const RecipeTable = () => {
     const hasFilters = Object.values(filters).some(v => v !== '');
 
     const filteredParams = Object.fromEntries(
-      Object.entries(filters).filter(([_, v]) => v !== '')
+      Object.entries(filters).filter(([, v]) => v !== '')
     );
 
     const query = new URLSearchParams({
@@ -180,21 +165,11 @@ const RecipeTable = () => {
               </tr>
             ) : (
               recipes.map((recipe, idx) => (
-                <tr
+                <RecipeRow
                   key={idx}
-                  className="border-t cursor-pointer hover:bg-gray-50"
-                  onClick={() => handleRowClick(recipe)}
-                >
-                  <td className="p-2 truncate max-w-[250px]" title={recipe.title}>
-                    {recipe.title}
-                  </td>
-                  <td className="p-2">{recipe.cuisine}</td>
-                  <td className="p-2">
-                    <StarRating rating={recipe.rating} />
-                  </td>
-                  <td className="p-2">{recipe.total_time} min</td>
-                  <td className="p-2">{recipe.serves}</td>
-                </tr>
+                  recipe={recipe}
+                  onClick={handleRowClick}
+                />
               ))
             )}
           </tbody>
@@ -222,98 +197,13 @@ const RecipeTable = () => {
           </button>
         </div>
       )}
-      {drawerOpen && selectedRecipe && (
-        <div
-          className="fixed top-0 right-0 h-full w-[400px] bg-white shadow-lg z-50 border-l border-gray-200 transition-all"
-          style={{ animation: 'slideIn 0.2s' }}
-        >
-          <div className="flex justify-between items-center p-4 border-b">
-            <div>
-              <div className="text-lg font-bold">{selectedRecipe.title}</div>
-              <div className="text-gray-500">{selectedRecipe.cuisine}</div>
-            </div>
-            <button
-              className="text-gray-400 hover:text-gray-700 text-2xl"
-              onClick={() => setDrawerOpen(false)}
-              aria-label="Close"
-            >
-              ×
-            </button>
-          </div>
-          <div className="p-4">
-            <div className="mb-2">
-              <span className="font-semibold">Description:</span>{' '}
-              <span>{selectedRecipe.description || 'N/A'}</span>
-            </div>
-            <div className="mb-2">
-              <span className="font-semibold">Total Time:</span>{' '}
-              <span>{selectedRecipe.total_time} min</span>
-              <button
-                className="ml-2 text-blue-500"
-                onClick={() => setExpandedTime(e => !e)}
-                aria-label="Expand"
-              >
-                {expandedTime ? '▲' : '▼'}
-              </button>
-              {expandedTime && (
-                <div className="ml-4 mt-1 text-sm text-gray-700">
-                  <div>
-                    <span className="font-semibold">Cook Time:</span>{' '}
-                    {selectedRecipe.cook_time || 'N/A'} min
-                  </div>
-                  <div>
-                    <span className="font-semibold">Prep Time:</span>{' '}
-                    {selectedRecipe.prep_time || 'N/A'} min
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="mt-4">
-              <div className="font-semibold mb-1">Nutrition</div>
-              <table className="w-full text-sm border">
-                <tbody>
-                  <tr>
-                    <td className="border px-2 py-1">Calories</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.calories || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-2 py-1">Carbohydrates</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.carbohydrateContent || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-2 py-1">Cholesterol</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.cholesterolContent || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-2 py-1">Fiber</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.fiberContent || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-2 py-1">Protein</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.proteinContent || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-2 py-1">Saturated Fat</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.saturatedFatContent || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-2 py-1">Sodium</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.sodiumContent || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-2 py-1">Sugar</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.sugarContent || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-2 py-1">Fat</td>
-                    <td className="border px-2 py-1">{selectedRecipe.nutrition?.fatContent || 'N/A'}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
+      <RecipeDrawer
+        recipe={selectedRecipe}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        expandedTime={expandedTime}
+        setExpandedTime={setExpandedTime}
+      />
       <style>
         {`
           @keyframes slideIn {

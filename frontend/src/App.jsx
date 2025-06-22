@@ -1,11 +1,12 @@
-import RecipeTable from './RecipeTable1'
+import TableComponent from './TableComponent.jsx'
 import './App.css'
 
 function App() {
+  
 
   return (
     <>
-    <RecipeTable />
+      <TableComponent />
     </>
   )
 }
